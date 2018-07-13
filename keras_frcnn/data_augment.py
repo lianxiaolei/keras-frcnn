@@ -71,4 +71,3 @@ def augment(img_data, config, augment=True):
     img_data_aug['width'] = img.shape[1]
     img_data_aug['height'] = img.shape[0]
     return img_data_aug, img
->>>>>>> e02572302e114949808abc93ad4f8cb9bfcbdc73

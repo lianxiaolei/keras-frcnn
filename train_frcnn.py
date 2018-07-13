@@ -54,7 +54,6 @@ elif options.parser == 'simple':
     from keras_frcnn.simple_parser import get_data
 else:
     raise ValueError("Command line option parser must be one of 'pascal_voc' or 'simple'")
->>>>>>> e02572302e114949808abc93ad4f8cb9bfcbdc73
 
 # pass the settings from the command line, and persist them in the config object
 C = config.Config()
