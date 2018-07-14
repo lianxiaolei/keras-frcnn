@@ -109,4 +109,3 @@ def get_data(input_path):
     print('classes_count', classes_count)
     print('class_mapping', class_mapping)
     return all_imgs, classes_count, class_mapping
->>>>>>> e02572302e114949808abc93ad4f8cb9bfcbdc73
