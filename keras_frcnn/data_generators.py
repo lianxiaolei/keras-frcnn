@@ -224,6 +224,7 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
 
             start = 4 * (best_anchor_for_bbox[idx, 2] + n_anchratios * best_anchor_for_bbox[idx, 3])
             # best_dx_for_bbox[bbox_num, :] = [tx, ty, tw, th]
+            # 这儿比较牛屁
             y_rpn_regr[
             best_anchor_for_bbox[idx, 0],
             best_anchor_for_bbox[idx, 1],
@@ -310,6 +311,7 @@ def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backen
                 # read in image, and optionally add augmentation
 
                 if mode == 'train':
+                    # img_data_aug是图像信息，x_img是图像数组
                     img_data_aug, x_img = data_augment.augment(img_data, C, augment=True)
                 else:
                     img_data_aug, x_img = data_augment.augment(img_data, C, augment=False)

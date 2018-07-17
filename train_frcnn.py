@@ -34,7 +34,7 @@ parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical fli
 parser.add_option("--rot", "--rot_90", dest="rot_90",
                   help="Augment with 90 degree rotations in training. (Default=false).",
                   action="store_true", default=False)
-parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=2000)
+parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=20)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -152,14 +152,18 @@ except:
 
 optimizer = Adam(lr=1e-5)
 optimizer_classifier = Adam(lr=1e-5)
-model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(num_anchors), losses.rpn_loss_regr(num_anchors)])
+model_rpn.compile(optimizer=optimizer,
+                  loss=[losses.rpn_loss_cls(num_anchors),
+                        losses.rpn_loss_regr(num_anchors)])
+
 model_classifier.compile(optimizer=optimizer_classifier,
-                         loss=[losses.class_loss_cls, losses.class_loss_regr(len(classes_count) - 1)],
+                         loss=[losses.class_loss_cls,
+                               losses.class_loss_regr(len(classes_count) - 1)],
                          metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
 
 model_all.compile(optimizer='sgd', loss='mae')
 
-epoch_length = 1000
+epoch_length = 100
 num_epochs = int(options.num_epochs)
 iter_num = 0
 
@@ -250,7 +254,6 @@ for epoch_num in range(num_epochs):
 
             losses[iter_num, 0] = loss_rpn[1]
             losses[iter_num, 1] = loss_rpn[2]
-
             losses[iter_num, 2] = loss_class[1]
             losses[iter_num, 3] = loss_class[2]
             losses[iter_num, 4] = loss_class[3]
@@ -297,5 +300,7 @@ for epoch_num in range(num_epochs):
         except Exception as e:
             print('Exception: {}'.format(e))
             continue
-
+    if not epoch_num == 0 and epoch_num % 3 == 0:
+        model_all.save_weights(C.model_path)
+        print('Mid-Trained model has saved.')
 print('Training complete, exiting.')
