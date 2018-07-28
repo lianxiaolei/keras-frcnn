@@ -106,7 +106,4 @@ def get_data(input_path):
             except Exception as e:
                 print(e)
                 continue
-    print('all_imgs', all_imgs)
-    print('classes_count', classes_count)
-    print('class_mapping', class_mapping)
     return all_imgs, classes_count, class_mapping

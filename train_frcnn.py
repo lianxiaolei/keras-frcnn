@@ -34,7 +34,7 @@ parser.add_option("--vf", dest="vertical_flips", help="Augment with vertical fli
 parser.add_option("--rot", "--rot_90", dest="rot_90",
                   help="Augment with 90 degree rotations in training. (Default=false).",
                   action="store_true", default=False)
-parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=20)
+parser.add_option("--num_epochs", type="int", dest="num_epochs", help="Number of epochs.", default=64)
 parser.add_option("--config_filename", dest="config_filename",
                   help="Location to store all the metadata related to the training (to be used when testing).",
                   default="config.pickle")
@@ -93,16 +93,14 @@ C.class_mapping = class_mapping
 
 inv_map = {v: k for k, v in class_mapping.items()}
 
-print('Training images per class:')
-pprint.pprint(classes_count)
 print('Num classes (including bg) = {}'.format(len(classes_count)))
 
 config_output_filename = options.config_filename
 
 with open(config_output_filename, 'wb') as config_f:
     pickle.dump(C, config_f)
-    print('Config has been written to {}, and can be loaded when testing to ensure correct results'.format(
-        config_output_filename))
+    # print('Config has been written to {}, and can be loaded when testing to ensure correct results'.format(
+    #     config_output_filename))
 
 random.shuffle(all_imgs)
 
@@ -111,8 +109,8 @@ num_imgs = len(all_imgs)
 train_imgs = [s for s in all_imgs if s['imageset'] == 'trainval']
 val_imgs = [s for s in all_imgs if s['imageset'] == 'test']
 
-print('Num train samples {}'.format(len(train_imgs)))
-print('Num val samples {}'.format(len(val_imgs)))
+# print('Num train samples {}'.format(len(train_imgs)))
+# print('Num val samples {}'.format(len(val_imgs)))
 
 data_gen_train = data_generators.get_anchor_gt(train_imgs, classes_count, C, nn.get_img_output_length,
                                                K.image_dim_ordering(), mode='train')
@@ -143,7 +141,7 @@ model_classifier = Model([img_input, roi_input], classifier)
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
 
 try:
-    print('loading weights from {}'.format(C.base_net_weights))
+    # print('loading weights from {}'.format(C.base_net_weights))
     model_rpn.load_weights(C.base_net_weights, by_name=True)
     model_classifier.load_weights(C.base_net_weights, by_name=True)
 except:
@@ -163,7 +161,7 @@ model_classifier.compile(optimizer=optimizer_classifier,
 
 model_all.compile(optimizer='sgd', loss='mae')
 
-epoch_length = 100
+epoch_length = 256
 num_epochs = int(options.num_epochs)
 iter_num = 0
 
