@@ -267,6 +267,7 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
 
             X, Y = np.meshgrid(np.arange(cols), np.arange(rows))
 
+            # 左上角坐标和宽高计算
             A[0, :, :, curr_layer] = X - anchor_x / 2
             A[1, :, :, curr_layer] = Y - anchor_y / 2
             A[2, :, :, curr_layer] = anchor_x
