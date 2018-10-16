@@ -211,6 +211,7 @@ def non_max_suppression_fast(boxes, probs, overlap_thresh=0.9, max_boxes=300):
         overlap = area_int / (area_union + 1e-6)
 
         # delete all indexes from the index list that have
+        # 删除用来匹配的框和与它高度重合的框，哇苏戴斯
         idxs = np.delete(idxs, np.concatenate(([last],
                                                np.where(overlap > overlap_thresh)[0])))
 
@@ -265,6 +266,7 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
                 regr = regr_layer[0, :, :, 4 * curr_layer:4 * curr_layer + 4]
                 regr = np.transpose(regr, (2, 0, 1))
 
+            # 每个像素对应的宽高值
             X, Y = np.meshgrid(np.arange(cols), np.arange(rows))
 
             # 左上角坐标和宽高计算
@@ -291,6 +293,7 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
     all_boxes = np.reshape(A.transpose((0, 3, 1, 2)), (4, -1)).transpose((1, 0))
     all_probs = rpn_layer.transpose((0, 3, 1, 2)).reshape((-1))
 
+    # 已经变成flatdim * 4
     x1 = all_boxes[:, 0]
     y1 = all_boxes[:, 1]
     x2 = all_boxes[:, 2]
