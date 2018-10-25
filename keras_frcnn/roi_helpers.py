@@ -75,6 +75,8 @@ def calc_iou(R, img_data, C, class_mapping):
         y_class_num.append(copy.deepcopy(class_label))
         coords = [0] * 4 * (len(class_mapping) - 1)
         labels = [0] * 4 * (len(class_mapping) - 1)
+
+        # 先判断出前景背景
         if cls_name != 'bg':
             label_pos = 4 * class_num
             sx, sy, sw, sh = C.classifier_regr_std

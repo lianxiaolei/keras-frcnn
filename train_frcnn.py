@@ -130,7 +130,7 @@ shared_layers = nn.nn_base(img_input, trainable=True)  # h/16 * w/16 * 512
 
 # define the RPN, built on the base layers
 num_anchors = len(C.anchor_box_scales) * len(C.anchor_box_ratios)
-rpn = nn.rpn(shared_layers, num_anchors)
+rpn = nn.rpn(shared_layers, num_anchors)  # 两个逐点卷积层, 一个n*n*1, 一个n*n*4
 
 classifier = nn.classifier(shared_layers, roi_input, C.num_rois, nb_classes=len(classes_count), trainable=True)
 
