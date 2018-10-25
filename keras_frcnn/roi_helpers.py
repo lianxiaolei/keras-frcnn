@@ -251,7 +251,7 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
     elif dim_ordering == 'tf':
         (rows, cols) = rpn_layer.shape[1:3]
 
-    curr_layer = 0
+    curr_layer = 0  # 记录每一次的anchor变更
     if dim_ordering == 'tf':
         A = np.zeros((4, rpn_layer.shape[1], rpn_layer.shape[2], rpn_layer.shape[3]))
     elif dim_ordering == 'th':
