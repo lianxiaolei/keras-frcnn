@@ -125,6 +125,12 @@ def apply_regr(x, y, w, h, tx, ty, tw, th):
 
 
 def apply_regr_np(X, T):
+    """
+    根据paper上的公式计算源于boundingboxregression的四个值
+    :param X:
+    :param T:
+    :return:
+    """
     try:
         x = X[0, :, :]
         y = X[1, :, :]
@@ -268,7 +274,7 @@ def rpn_to_roi(rpn_layer, regr_layer, C, dim_ordering, use_regr=True, max_boxes=
                 regr = regr_layer[0, :, :, 4 * curr_layer:4 * curr_layer + 4]
                 regr = np.transpose(regr, (2, 0, 1))
 
-            # 每个像素对应的宽高值
+            # 每个像素对应的宽高值(以这个像素为中心画出的框的宽高)
             X, Y = np.meshgrid(np.arange(cols), np.arange(rows))
 
             # 左上角坐标和宽高计算
